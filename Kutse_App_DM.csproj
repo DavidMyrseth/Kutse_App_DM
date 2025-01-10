@@ -201,7 +201,11 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\Christmas.jpg" />
+    <Content Include="Images\Default.jpg" />
     <Content Include="Images\KutseCat.jpg" />
+    <Content Include="Images\NewYear.jpg" />
+    <Content Include="Images\Valentine.jpg" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />

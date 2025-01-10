@@ -16,7 +16,7 @@ namespace Kutse_App_DM.Models
 
         public string Email { get; set; }
         [Required(ErrorMessage = "Sisesta telefoni number")]
-        [RegularExpression(@"\+372.", ErrorMessage = "Numbri alguses peal olema +372")]
+        [RegularExpression(@"\+372.+", ErrorMessage = "Numbri alguses peal olema +372")]
 
         public string Phone { get; set; }
         [Required(ErrorMessage = "Sisesta oma valik")]

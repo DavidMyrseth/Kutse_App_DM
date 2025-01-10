@@ -13,9 +13,49 @@ namespace Kutse_App_DM.Controllers
     {
         public ActionResult Index()
         {
-            ViewBag.Message = "Ootan sind minu peole! Palun tule!";
-            int hour = DateTime.Now.Hour;
-            ViewBag.Greeting = hour < 10 ? "Tere hommikust!" : "Tere päevast!";
+            var currentHour = DateTime.Now.Hour;
+            if (currentHour >= 5 && currentHour < 12)
+            {
+                ViewBag.Greeting = "Tere hommikust"; // Доброе утро
+            }
+            else if (currentHour >= 12 && currentHour < 17)
+            {
+                ViewBag.Greeting = "Tere päevast"; // Добрый день
+            }
+            else if (currentHour >= 17 && currentHour < 21)
+            {
+                ViewBag.Greeting = "Tere õhtust"; // Добрый вечер
+            }
+            else
+            {
+                ViewBag.Greeting = "Tere öösel"; // Доброй ночи
+            }
+
+            // Определение сообщения и картинки по месяцу
+            var currentMonth = DateTime.Now.Month;
+            switch (currentMonth)
+            {
+                case 1:
+                    ViewBag.Message = "Head uut aastat!";
+                    ViewBag.Image = "../Images/NewYear.jpg";
+                    break;
+                case 2:
+                    ViewBag.Message = "Sõbrapäev on käes!";
+                    ViewBag.Image = "../Images/Valentine.jpg";
+                    break;
+                case 3:
+                    ViewBag.Message = "Kevad on tulemas!";
+                    ViewBag.Image = "../Images/Spring.jpg";
+                    break;
+                case 12:
+                    ViewBag.Message = "Häid jõule!";
+                    ViewBag.Image = "../Images/Christmas.jpg";
+                    break;
+                default:
+                    ViewBag.Message = "Ootame sind suure rõõmuga!";
+                    ViewBag.Image = "../Images/Default.jpg";
+                    break;
+            }
             return View();
         }
         [HttpGet]
@@ -37,14 +77,24 @@ namespace Kutse_App_DM.Controllers
         { 
             try
             {
-                WebMail.SmtpServer = "stmp.gmail.com";
+                WebMail.SmtpServer = "smtp.gmail.com";
                 WebMail.SmtpPort = 587;
                 WebMail.EnableSsl = true;
                 WebMail.UserName = "david.mirsetSSS@gmail.com";
-                WebMail.Password = "";
+                WebMail.Password = "hclw huou slbk enkc";
                 WebMail.From = "david.mirsetSSS@gmail.com";
-                WebMail.Send = "marina.oleinik@tthk.ee", "Vastus kutsele",guest.Name + "vastas" + ((guest.WillAttend ?? false) ? "tuleb peole " : "ei tule peole"));
+                WebMail.Send("marina.oleinik@tthk.ee", "Vastus kutsele ", guest.Name + "vastas" + ((guest.WillAttend ?? false) ? " tuleb peole " : "ei tule peole"));
+                ViewBag.Message = "Kiri on saatnud!"; // marina.oleinik@tthk.ee
+
             }
+            catch (Exception ex)
+            {
+                ViewBag.Message = "Mul on kahju! Ei saa kirja saada!!!" + ex.Message;
+            }
+        }
+        public ActionResult Undux()
+        {    
+            return View();
         }
     }
 }

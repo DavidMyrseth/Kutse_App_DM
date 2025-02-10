@@ -59,6 +59,40 @@ namespace Kutse_App_DM.Controllers
             return View();
         }
         [HttpGet]
+        public ActionResult Create()
+        {
+            return View();
+        }
+        [HttpGet]
+        public ActionResult Create(Guest guest)
+        {
+            db.Guests.Add(guest);
+            db.SaveChanges();
+            return RedirectToAction("Guests");
+        }
+        [HttpGet]
+        public ActionResult Delete(int id)
+        {
+            Guest g = db.Guests.Find(id);
+            if (g==null)
+            {
+                return HttpNotFound();
+            }
+            return View(g);
+        }
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Guest g = db.Guests.Find(id);
+            if (g == null)
+            {
+                return HttpNotFound();
+            }
+            db.Guests.Remove(g);
+            db.SaveChanges();
+            return RedirectToAction("Guests");
+        }
+
         public ViewResult Ankeet()
         {
             return View();
@@ -69,10 +103,35 @@ namespace Kutse_App_DM.Controllers
         {
             E_mail(guest); // функция для отправки письма с ответами
             if (ModelState.IsValid)
-            { return View("Thanks", guest); }
+            {
+                db.Guests.Add(guest);
+                db.SaveChanges();
+                return View("Thanks", guest); }
             else
             { return View(); }
         }
+        [HttpGet]
+        public ActionResult Edit(int? id)
+        {
+            Guest g = db.Guests.Find(id);
+            if (g == null)
+            {
+                return HttpNotFound();
+            }
+            return View(g);
+        }
+        public ActionResult EditConfirmed(Guest guest)
+        {
+            db.Entry(guest).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Guests");
+        }
+        public ActionResult Accept()
+        {
+            IEnumerable<Guest> guests = db.Guests.Where(g => g.WillAttend);
+            return View(guests);
+        }
+
         public void E_mail(Guest guest) 
         { 
             try
@@ -95,6 +154,14 @@ namespace Kutse_App_DM.Controllers
         public ActionResult Undux()
         {    
             return View();
+        }
+
+        GuestContext db = new GuestContext();
+        [Authorize]
+        public ActionResult Guests()
+        {
+            IEnumerable<Guest> guests = db.Guests;
+            return View(guests);
         }
     }
 }
